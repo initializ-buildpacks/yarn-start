@@ -6,7 +6,7 @@ import (
 	"testing"
 
 	"github.com/paketo-buildpacks/packit/v2"
-	yarnstart "github.com/paketo-buildpacks/yarn-start"
+	yarnstart "github.com/initializ-buildpacks/yarn-start"
 	"github.com/sclevine/spec"
 
 	. "github.com/onsi/gomega"

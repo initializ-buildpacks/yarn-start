@@ -5,7 +5,7 @@ import (
 
 	"github.com/paketo-buildpacks/packit/v2"
 	"github.com/paketo-buildpacks/packit/v2/scribe"
-	yarnstart "github.com/paketo-buildpacks/yarn-start"
+	yarnstart "github.com/initializ-buildpacks/yarn-start"
 )
 
 func main() {

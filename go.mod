@@ -1,4 +1,4 @@
-module github.com/paketo-buildpacks/yarn-start
+module github.com/initializ-buildpacks/yarn-start
 
 go 1.19
 
