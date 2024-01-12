@@ -1,7 +1,7 @@
 {
   "builders": ["paketobuildpacks/builder-jammy-buildpackless-base"],
-  "node-engine": "github.com/paketo-buildpacks/node-engine",
-  "yarn": "github.com/paketo-buildpacks/yarn",
-  "yarn-install": "github.com/paketo-buildpacks/yarn-install",
+  "node-engine": "github.com/initializ-buildpacks/node-engine",
+  "yarn": "github.com/initializ-buildpacks/yarn",
+  "yarn-install": "github.com/initializ-buildpacks/yarn-install",
   "watchexec": "github.com/paketo-buildpacks/watchexec"
 }
