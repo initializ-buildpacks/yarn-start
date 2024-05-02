@@ -1,7 +1,7 @@
 {
   "builders": ["initializbuildpacks/securepacks-initzbuilder"],
-  "node-engine": "github.com/initializ-buildpacks/node-engine",
-  "yarn": "github.com/initializ-buildpacks/yarn",
-  "yarn-install": "github.com/initializ-buildpacks/yarn-install",
+  "node-engine": "index.docker.io/initializbuildpacks/node-engine",
+  "yarn": "index.docker.io/initializbuildpacks/yarn",
+  "yarn-install": "index.docker.io/initializbuildpacks/yarn-install",
   "watchexec": "index.docker.io/initializbuildpacks/watchexec"
 }
