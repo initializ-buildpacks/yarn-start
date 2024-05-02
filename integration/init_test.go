@@ -10,7 +10,6 @@ import (
 	"github.com/BurntSushi/toml"
 	. "github.com/onsi/gomega"
 	"github.com/paketo-buildpacks/occam"
-	"github.com/paketo-buildpacks/occam/packagers"
 	"github.com/sclevine/spec"
 	"github.com/sclevine/spec/report"
 )
@@ -33,19 +32,27 @@ var settings struct {
 			Online string
 		}
 	}
+	Extensions struct {
+		UbiNodejsExtension struct {
+			Online string
+		}
+	}
 	Buildpack struct {
 		ID   string
 		Name string
 	}
 	Config struct {
-		NodeEngine  string `json:"node-engine"`
-		Yarn        string `json:"yarn"`
-		YarnInstall string `json:"yarn-install"`
-		Watchexec   string `json:"watchexec"`
+		NodeEngine         string `json:"node-engine"`
+		Yarn               string `json:"yarn"`
+		YarnInstall        string `json:"yarn-install"`
+		Watchexec          string `json:"watchexec"`
+		UbiNodejsExtension string `json:"ubi-nodejs-extension"`
 	}
 }
 
 func TestIntegration(t *testing.T) {
+	var docker = occam.NewDocker()
+
 	Expect := NewWithT(t).Expect
 	SetDefaultEventuallyTimeout(10 * time.Second)
 
@@ -67,7 +74,16 @@ func TestIntegration(t *testing.T) {
 
 	buildpackStore := occam.NewBuildpackStore()
 
-	libpakBuildpackStore := occam.NewBuildpackStore().WithPackager(packagers.NewLibpak())
+	pack := occam.NewPack()
+
+	builder, err := pack.Builder.Inspect.Execute()
+	Expect(err).NotTo(HaveOccurred())
+
+	if builder.BuilderName == "paketocommunity/builder-ubi-buildpackless-base:latest" {
+		settings.Extensions.UbiNodejsExtension.Online, err = buildpackStore.Get.
+			Execute(settings.Config.UbiNodejsExtension)
+		Expect(err).ToNot(HaveOccurred())
+	}
 
 	settings.Buildpacks.YarnStart.Online, err = buildpackStore.Get.
 		WithVersion("1.2.3").
@@ -86,9 +102,11 @@ func TestIntegration(t *testing.T) {
 		Execute(settings.Config.YarnInstall)
 	Expect(err).NotTo(HaveOccurred())
 
-	settings.Buildpacks.Watchexec.Online, err = libpakBuildpackStore.Get.
-		Execute(settings.Config.Watchexec)
-	Expect(err).NotTo(HaveOccurred())
+	settings.Buildpacks.Watchexec.Online = settings.Config.Watchexec
+	err = docker.Pull.Execute(settings.Buildpacks.Watchexec.Online)
+	if err != nil {
+		t.Fatalf("Failed to pull %s: %s", settings.Buildpacks.Watchexec.Online, err)
+	}
 
 	suite := spec.New("Integration", spec.Report(report.Terminal{}), spec.Parallel())
 	suite("CustomStartCmd", testCustomStartCmd)
