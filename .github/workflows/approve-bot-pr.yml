@@ -31,7 +31,7 @@ jobs:
   approve:
     name: Approve Bot PRs
     needs: download
-    if: ${{ needs.download.outputs.pr-author == 'paketo-bot' || needs.download.outputs.pr-author == 'dependabot[bot]' }}
+    if: ${{ needs.download.outputs.pr-author == 'initializ-bot' || needs.download.outputs.pr-author == 'dependabot[bot]' }}
     runs-on: ubuntu-22.04
     steps:
     - name: Check Commit Verification
@@ -56,7 +56,7 @@ jobs:
 
     - name: Approve
       if: steps.human-commits.outputs.human_commits == 'false' && steps.unverified-commits.outputs.unverified_commits == 'false'
-      uses: paketo-buildpacks/github-config/actions/pull-request/approve@main
+      uses: initializ-buildpacks/github-config/actions/pull-request/approve@main
       with:
         token: ${{ secrets.PAT }}
         number: ${{ needs.download.outputs.pr-number }}

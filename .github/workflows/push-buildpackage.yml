@@ -28,7 +28,7 @@ jobs:
       with:
         url: ${{ steps.event.outputs.download_url }}
         output: "/github/workspace/buildpackage.cnb"
-        token: ${{ secrets.PAKETO_BOT_GITHUB_TOKEN }}
+        token: ${{ secrets.PAT }}
 
     - name: Validate version
       run: |
@@ -47,7 +47,7 @@ jobs:
         DOCKERHUB_PASSWORD: ${{ secrets.INITIALIZ_BUILDPACKS_DOCKERHUB_PASSWORD }}
         GITHUB_REPOSITORY_OWNER: ${{ github.repository_owner }}
       run: |
-        REPOSITORY="${GITHUB_REPOSITORY_OWNER/-/}/${GITHUB_REPOSITORY#${GITHUB_REPOSITORY_OWNER}/}" # translates 'paketo-buildpacks/bundle-install' to 'paketobuildpacks/bundle-install'
+        REPOSITORY="${GITHUB_REPOSITORY_OWNER/-/}/${GITHUB_REPOSITORY#${GITHUB_REPOSITORY_OWNER}/}" # translates 'initializ-buildpacks/bundle-install' to 'initializbuildpacks/bundle-install'
         IMAGE="index.docker.io/${REPOSITORY}"
         echo "${DOCKERHUB_PASSWORD}" | sudo skopeo login --username "${DOCKERHUB_USERNAME}" --password-stdin index.docker.io
         sudo skopeo copy "oci-archive:${GITHUB_WORKSPACE}/buildpackage.cnb" "docker://${IMAGE}:${{ steps.event.outputs.tag_full }}"
@@ -63,7 +63,7 @@ jobs:
         id: ${{ github.repository }}
         version: ${{ steps.event.outputs.tag_full }}
         address: ${{ steps.push.outputs.image }}@${{ steps.push.outputs.digest }}
-        token: ${{ secrets.PAKETO_BOT_GITHUB_TOKEN }}
+        token: ${{ secrets.PAT }}
 
   failure:
     name: Alert on Failure
