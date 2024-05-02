@@ -3,5 +3,5 @@
   "node-engine": "github.com/initializ-buildpacks/node-engine",
   "yarn": "github.com/initializ-buildpacks/yarn",
   "yarn-install": "github.com/initializ-buildpacks/yarn-install",
-  "watchexec": "index.docker.io/paketobuildpacks/watchexec"
+  "watchexec": "index.docker.io/initializbuildpacks/watchexec"
 }
