@@ -75,14 +75,14 @@ jobs:
       uses: initializ-buildpacks/github-config/actions/release/reset-draft@main
       with:
         repo: ${{ github.repository }}
-        token: ${{ github.token }}
+        token: ${{ secrets.PAT }}
     - name: Calculate Semver Tag
       if: github.event.inputs.version == ''
       id: semver
       uses: initializ-buildpacks/github-config/actions/tag/calculate-semver@main
       with:
         repo: ${{ github.repository }}
-        token: ${{ github.token }}
+        token: ${{ secrets.PAT }}
         ref-name: ${{ github.ref_name }}
     - name: Set Release Tag
       id: tag
